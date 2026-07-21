@@ -123,7 +123,7 @@ footer a{color:#777}
         <option value="">Select year&hellip;</option>
         <option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="2020">2020</option><option value="2019">2019</option><option value="2018">2018</option><option value="2017">2017</option><option value="2016">2016</option><option value="2015">2015</option><option value="2014">2014</option><option value="2013">2013</option><option value="2012">2012</option><option value="2011">2011</option><option value="2010">2010</option><option value="2009">2009</option><option value="2008">2008</option><option value="2007">2007</option><option value="2006">2006</option><option value="2005">2005</option><option value="2004">2004</option><option value="2003">2003</option><option value="2002">2002</option><option value="2001">2001</option><option value="2000">2000</option><option value="1999">1999</option><option value="1998">1998</option><option value="1997">1997</option><option value="1996">1996</option><option value="1995">1995</option><option value="1994">1994</option><option value="1993">1993</option><option value="1992">1992</option><option value="1991">1991</option><option value="1990">1990</option><option value="1989">1989</option><option value="1988">1988</option><option value="1987">1987</option>
       </select>
-      <button class="vs-btn" onclick="goToGen()">Find My Parts &rarr;</button>
+      <button id="vs-go-btn" class="vs-btn" onclick="goToGen()">Find My Parts &rarr;</button>
     </div>
     <div class="vs-divider">or browse by generation</div>
     <div class="gen-sel-grid"><a href="/for-jl.html" class="gen-sel-btn"><span class="gsb-label">JL / JLU</span><span class="gsb-years">2018–2026</span></a><a href="/for-jl-4xe.html" class="gen-sel-btn"><span class="gsb-label">JL 4xe</span><span class="gsb-years">2021–2026</span></a><a href="/for-jl-mojave.html" class="gen-sel-btn"><span class="gsb-label">JL Mojave</span><span class="gsb-years">2021–2026</span></a><a href="/for-jl-392.html" class="gen-sel-btn"><span class="gsb-label">JL 392</span><span class="gsb-years">2021–2026</span></a><a href="/for-jk-2013.html" class="gen-sel-btn"><span class="gsb-label">JK / JKU</span><span class="gsb-years">2013–2018</span></a><a href="/for-jk-2011.html" class="gen-sel-btn"><span class="gsb-label">JK / JKU</span><span class="gsb-years">2011–2012</span></a><a href="/for-jk-2007.html" class="gen-sel-btn"><span class="gsb-label">JK / JKU</span><span class="gsb-years">2007–2010</span></a><a href="/for-tj-2003.html" class="gen-sel-btn"><span class="gsb-label">TJ / LJ</span><span class="gsb-years">2003–2006</span></a><a href="/for-tj-1997.html" class="gen-sel-btn"><span class="gsb-label">TJ</span><span class="gsb-years">1997–2002</span></a><a href="/for-yj.html" class="gen-sel-btn"><span class="gsb-label">YJ</span><span class="gsb-years">1987–1995</span></a></div>
@@ -147,10 +147,26 @@ footer a{color:#777}
   <p class="disclaimer">wranglerjeepaccessories.com is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com.</p>
 </footer>
 <script>
-var yearMap = {"1987": "yj", "1988": "yj", "1989": "yj", "1990": "yj", "1991": "yj", "1992": "yj", "1993": "yj", "1994": "yj", "1995": "yj", "1997": "tj-1997", "1998": "tj-1997", "1999": "tj-1997", "2000": "tj-1997", "2001": "tj-1997", "2002": "tj-1997", "2003": "tj-2003", "2004": "tj-2003", "2005": "tj-2003", "2006": "tj-2003", "2007": "jk-2007", "2008": "jk-2007", "2009": "jk-2007", "2010": "jk-2007", "2011": "jk-2011", "2012": "jk-2011", "2013": "jk-2013", "2014": "jk-2013", "2015": "jk-2013", "2016": "jk-2013", "2017": "jk-2013", "2018": "jl", "2019": "jl", "2020": "jl", "2021": "jl", "2022": "jl", "2023": "jl", "2024": "jl", "2025": "jl", "2026": "jl"};
+var yearMap = {"1987": "yj", "1988": "yj", "1989": "yj", "1990": "yj", "1991": "yj", "1992": "yj", "1993": "yj", "1994": "yj", "1995": "yj", "1997": "tj-1997", "1998": "tj-1997", "1999": "tj-1997", "2000": "tj-1997", "2001": "tj-1997", "2002": "tj-1997", "2003": "tj-2003", "2004": "tj-2003", "2005": "tj-2003", "2006": "tj-2003", "2007": "jk-2007", "2008": "jk-2007", "2009": "jk-2007", "2010": "jk-2007", "2011": "jk-2011", "2012": "jk-2011", "2013": "jk-2013", "2014": "jk-2013", "2015": "jk-2013", "2016": "jk-2013", "2017": "jk-2013", "2019": "jl", "2020": "jl", "2021": "jl", "2022": "jl", "2023": "jl", "2024": "jl", "2025": "jl", "2026": "jl"};
+// 2018 is the only overlap year — both JK (last year) and JL (first year) were produced
+function show2018Picker() {
+  var existing = document.getElementById('overlap-picker');
+  if (existing) { existing.remove(); return; }
+  var div = document.createElement('div');
+  div.id = 'overlap-picker';
+  div.style.cssText = 'margin-top:12px;background:#fff3cd;border:2px solid #f0a500;border-radius:8px;padding:14px 16px;text-align:left;';
+  div.innerHTML = '<p style="font-weight:700;margin-bottom:10px;font-size:.95em;">&#9888;&#65039; 2018 was the only year both generations were built. Which do you have?</p>'
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap;">'
+    + '<a href="/for-jk-2013.html" style="flex:1;min-width:140px;background:#1a1a1a;color:#fff;padding:10px 14px;border-radius:6px;text-align:center;font-weight:700;font-size:.9em;text-decoration:none;">JK / JKU 2018<br><span style="font-weight:400;font-size:.82em;">4-cylinder or 3.6L V6<br>Round headlights, halogen</span></a>'
+    + '<a href="/for-jl.html" style="flex:1;min-width:140px;background:#c0392b;color:#fff;padding:10px 14px;border-radius:6px;text-align:center;font-weight:700;font-size:.9em;text-decoration:none;">JL / JLU 2018<br><span style="font-weight:400;font-size:.82em;">2.0T or 3.6L Pentastar<br>LED headlights, keypad door</span></a>'
+    + '</div>';
+  var btn = document.getElementById('vs-go-btn');
+  btn.parentNode.insertBefore(div, btn.nextSibling);
+}
 function goToGen() {
   var yr = document.getElementById('yr-select').value;
   if (!yr) { alert('Please select a year first.'); return; }
+  if (yr === '2018') { show2018Picker(); return; }
   var anchor = yearMap[yr];
   if (anchor) {
     window.location.href = '/for-' + anchor + '.html';
